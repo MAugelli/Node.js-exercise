@@ -1,0 +1,24 @@
+{
+  "name": "node.js-exercise-part01",
+  "version": "1.0.0",
+  "description": "Develhope Node.js exercise",
+  "main": "app.test.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MAugelli/Node.js-exercise-part01.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MAugelli/Node.js-exercise-part01/issues"
+  },
+  "homepage": "https://github.com/MAugelli/Node.js-exercise-part01#readme",
+  "devDependencies": {
+    "jest": "^29.1.2",
+    "supertest": "^6.3.0"
+  }
+}
