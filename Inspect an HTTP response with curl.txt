@@ -1,1 +1,74 @@
-Inspect an HTTP response with curl
+curl https://jsonplaceholder.typicode.com/posts/1/comments -v
+*   Trying 104.21.58.30:443...
+* Connected to jsonplaceholder.typicode.com (104.21.58.30) port 443 (#0)
+* schannel: disabled automatic use of client certificate
+* ALPN: offers http/1.1
+* ALPN: server accepted http/1.1
+> GET /posts/1/comments HTTP/1.1
+> Host: jsonplaceholder.typicode.com
+> User-Agent: curl/7.83.1
+> Accept: */*
+>
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< Date: Mon, 10 Oct 2022 16:25:24 GMT
+< Content-Type: application/json; charset=utf-8
+< Transfer-Encoding: chunked
+< Connection: keep-alive
+< X-Powered-By: Express
+< X-Ratelimit-Limit: 1000
+< X-Ratelimit-Remaining: 999
+< X-Ratelimit-Reset: 1665381747
+< Vary: Origin, Accept-Encoding
+< Access-Control-Allow-Credentials: true
+< Cache-Control: max-age=43200
+< Pragma: no-cache
+< Expires: -1
+< X-Content-Type-Options: nosniff
+< Etag: W/"5e6-4bSPS5tq8F8ZDeFJULWh6upjp7U"
+< Via: 1.1 vegur
+< CF-Cache-Status: HIT
+< Age: 4283
+< Report-To: {"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=rT%2Fc%2FYwKYu32WpWkiIt%2BKYUK6oVYPHdx3WKCiyTJt1SofL7OWwIcwGgxLCCbp48qGhYuV8DHbsOQSlvgUR0LpMa9sNH27NOAT%2Brgw56qL9GbwDrnmK8fjJcP5sLF2lGjTya5ut3ZIYm90JrIIt%2FB"}],"group":"cf-nel","max_age":604800}
+< NEL: {"success_fraction":0,"report_to":"cf-nel","max_age":604800}
+< Server: cloudflare
+< CF-RAY: 7580b63a8ca83756-MXP
+< alt-svc: h3=":443"; ma=86400, h3-29=":443"; ma=86400
+<
+[
+  {
+    "postId": 1,
+    "id": 1,
+    "name": "id labore ex et quam laborum",
+    "email": "Eliseo@gardner.biz",
+    "body": "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium"
+  },
+  {
+    "postId": 1,
+    "id": 2,
+    "name": "quo vero reiciendis velit similique earum",
+    "email": "Jayne_Kuhic@sydney.com",
+    "body": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et"
+  },
+  {
+    "postId": 1,
+    "id": 3,
+    "name": "odio adipisci rerum aut animi",
+    "email": "Nikita@garfield.biz",
+    "body": "quia molestiae reprehenderit quasi aspernatur\naut expedita occaecati aliquam eveniet laudantium\nomnis quibusdam delectus saepe quia accusamus maiores nam est\ncum et ducimus et vero voluptates excepturi deleniti ratione"
+  },
+  {
+    "postId": 1,
+    "id": 4,
+    "name": "alias odio sit",
+    "email": "Lew@alysha.tv",
+    "body": "non et atque\noccaecati deserunt quas accusantium unde odit nobis qui voluptatem\nquia voluptas consequuntur itaque dolor\net qui rerum deleniti ut occaecati"
+  },
+  {
+    "postId": 1,
+    "id": 5,
+    "name": "vero eaque aliquid doloribus et culpa",
+    "email": "Hayden@althea.biz",
+    "body": "harum non quasi et ratione\ntempore iure ex voluptates in ratione\nharum architecto fugit inventore cupiditate\nvoluptates magni quo et"
+  }
+]* Connection #0 to host jsonplaceholder.typicode.com left intact
