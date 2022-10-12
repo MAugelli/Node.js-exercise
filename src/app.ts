@@ -3,8 +3,11 @@ import "express-async-errors"
 
 const app = express()
 
-app.get("/",(request, response) => {
-    response.send("Server on!!")
+app.get("/F1Team",(request, response) => {
+    response.json([
+        {name: "Ferrari"},
+        {name: "Haas"}
+    ])
 })
 
 export default app
