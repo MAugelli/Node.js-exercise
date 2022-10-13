@@ -9,3 +9,13 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Planet{
+  id            Int             @id @default(autoincrement())
+  name          String          @db.VarChar(225)
+  description   String?
+  diameter      Int
+  moons         Int
+  createAt      DateTime        @default(now())
+  updetedAt     DateTime        @updatedAt
+}
