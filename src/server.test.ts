@@ -26,6 +26,7 @@ test("GET /planets", async () =>{
         }
     ]
 
+        // @ts-ignore
     prismaMock.planet.findMany.mockResolvedValue(planets)
 
     const response = await request
