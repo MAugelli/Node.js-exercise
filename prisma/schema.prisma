@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Planet{
-  id            Int             @id @default(autoincrement())
+  id            Int             @unique @default(autoincrement())
   name          String          @db.VarChar(225)
   description   String?
   diameter      Int
