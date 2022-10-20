@@ -138,6 +138,92 @@ describe("POST /planets", async () => {
     })
 })
 
+describe("PUT /planets/:id", async () => {
+    test("Valid request", async () =>{
+        const planet ={
+            id: 4,
+            name: "Mercury",
+            desciption: "Nice planet",
+            diameter: 1234,
+            moons: 12,
+            createAt: "2022-10-20T09:44:09.013Z",
+            updetedAt: "2022-10-20T09:44:09.013Z"
+        }
+
+        // @ts-ignore
+        prismaMock.planet.update.mockResolvedValue(planet)
+
+        const response = await request
+        .put("/planets/4")
+        .send(
+            {
+                name: "Mercury",
+                desciption: "Nice planet",
+                diameter: 1234,
+                moons: 12,
+            }
+
+        )
+        .expect(200)
+        .expect("Content-Type", /application\/json\);
+
+    expect(response.body).toEqual(planet)
+    })
+
+    test("Invalid request", async () =>{
+        const planet =
+            {
+                diameter: 1234,
+                moons: 12,
+            }
+
+        const response = await request
+        .put("/planets/23")
+        .send(planet)
+        .expect(422)
+        .expect("Content-Type", /application\/json\);
+
+    expect(response.body).toEqual({
+        error:{
+            body: expect.any(Array)
+        }
+    })
+    })
+
+    test("Planet doea not exist", async ()=>{
+        // @ts-ignore
+        prismaMock.planet.update.mockRejectedValue(new Error("Error"))
+
+        const response = await request
+            .put("/planets/23")
+            .send({
+                name: "Mercury",
+                desciption: "Nice planet",
+                diameter: 1234,
+                moons: 12,
+            })
+            .expect(404)
+            .expect("Content-Type", /text\/html\);
+
+        expect(response.text).toContain("Cannot PUT /planets/23")
+    })
+
+    test("Invalid planet ID", async ()=>{
+
+        const response = await request
+            .put("/planets/asdf")
+            .send({
+                name: "Mercury",
+                desciption: "Nice planet",
+                diameter: 1234,
+                moons: 12,
+            })
+            .expect(404)
+            .expect("Content-Type", /text\/html\);
+
+        expect(response.text).toContain("Cannot PUT /planets/23")
+    })
+})
 
 
 
