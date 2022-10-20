@@ -3,6 +3,9 @@ import "express-async-errors"
 import prisma from "./lib/prisma/client"
 import { validate, ValidationErrorMiddleware, planetSchema, PlanetData } from "./lib/validation"
 import cors from "cors"
+import { initMulterMiddlewere } from "./lib/middleware/multer"
+
+const upload = initMulterMiddlewere()
 
 const corsOption = {
     origin: "http://localhost:8080"
@@ -74,6 +77,21 @@ app.delete("/planets/:id(\\d+)", async (request, response, next) => {
         response.status(404)
         next(`Cannot DELETE /planets/${planetId}`)
     }
+})
+
+app.post("/planets/:id(\\d+)/photo",
+    upload.single("photo"),
+    async (request, response, next) => {
+
+
+        if (!request.file) {
+            response.status(400)
+            next("No photo file uploaded")
+        }
+
+    const photoFilename = request.file.fieldname
+
+    response.status(201).json({photoFilename})
 })
 
 app.use(ValidationErrorMiddleware)

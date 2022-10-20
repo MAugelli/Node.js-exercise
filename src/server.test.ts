@@ -1,3 +1,4 @@
+import { describe } from "node:test"
 import supertest from "supertest"
 import app from "./app"
 import {prismaMock} from "./lib/prisma/client.mock"
@@ -267,5 +268,23 @@ describe("DELETE /planets/:id", async () => {
     })
 })
 
+describe("POST  /planets/:id/photo", ()=>{
+    test("Invalid planets ID", async () => {
+        const response= await request
+            .post("/planets/asdf/photo")
+            expect(404)
+            .expect("Content-Type", /text\/html\);
 
+        expect(response.text).toContain("Cannot POST /planets/asdf/photo")
+    })
+
+    test("Invalid request - No file", async () => {
+        const response= await request
+            .post("/planets/23/photo")
+            expect(404)
+            .expect("Content-Type", /text\/html\);
+
+        expect(response.text).toContain("No photo to upload")
+    })
+})
 
