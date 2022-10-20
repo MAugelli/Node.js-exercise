@@ -269,6 +269,15 @@ describe("DELETE /planets/:id", async () => {
 })
 
 describe("POST  /planets/:id/photo", ()=>{
+    test("Valid test with PNG file", async ()=>{
+        await request
+            .post("/planets/23/photo")
+            .attach("photo", "test-fixture/photo/file.png")
+            .expect(201)
+            .expert("Access-Control-Allow-Origin, http://localhost:8080");
+
+    })
+
     test("Invalid planets ID", async () => {
         const response= await request
             .post("/planets/asdf/photo")

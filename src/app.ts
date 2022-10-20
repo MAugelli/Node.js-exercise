@@ -89,7 +89,7 @@ app.post("/planets/:id(\\d+)/photo",
             next("No photo file uploaded")
         }
 
-    const photoFilename = request.file.fieldname
+    const photoFilename = request.file?.fieldname
 
     response.status(201).json({photoFilename})
 })
