@@ -39,6 +39,53 @@ describe("GET /planets", async () => {
     })
 })
 
+describe("GET /planets/:id", async () => {
+    test("Valid request", async () =>{
+        const planet =
+            {
+                id: 2,
+                name: "Venus",
+                description: null,
+                diameter: 6543,
+                moons: 5,
+                createAt: "2022-10-18T17:14:40.960Z",
+                updetedAt: "2022-10-18T17:14:03.263Z"
+            }
+
+        // @ts-ignore
+        prismaMock.planet.findUnique.mockResolvedValue(planet)
+
+        const response = await request
+        .get("/planets/2")
+        .expect(200)
+        .expect("Content-Type", /application\/json\);
+
+    expect(response.body).toEqual(planet)
+    })
+
+    test("Planet doea not exist", async ()=>{
+        // @ts-ignore
+        prismaMock.planet.findUnique.mockResolvedValue(null)
+
+        const response = await request
+            .get("/planets/23")
+            .expect(404)
+            .expect("Content-Type", /text\/html\);
+
+        expect(response.text).toContain("Cannot get /planets/23")
+    })
+
+    test("Invalid planet ID", async ()=>{
+
+        const response = await request
+            .get("/planets/asdf")
+            .expect(404)
+            .expect("Content-Type", /text\/html\);
+
+        expect(response.text).toContain("Cannot get /planets/23")
+    })
+})
+
 describe("POST /planets", async () => {
     test("Valid request", async () =>{
         const planet ={
