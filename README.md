@@ -1,2 +1,2 @@
-# Node.js-exercise-part01
+# Node.js-exercise
 Develhope Node.js exercise 
