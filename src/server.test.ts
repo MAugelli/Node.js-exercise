@@ -233,67 +233,62 @@ describe("PUT /planets/:id", async () => {
     })
 })
 
-describe("DELETE /planets/:id", async () => {
-    test("Valid request", async () =>{
-
-        const response = await request
-        .delete("/planets/2")
-        .expect(204)
-        .expert("Access-Control-Allow-Origin, http://localhost:8080");
-
-
-    expect(response.text).toEqual("")
-    })
-
-    test("Planet doea not exist", async ()=>{
-        // @ts-ignore
-        prismaMock.planet.delete.mockRejectedValue(new Error("Error"))
-
-        const response = await request
-            .delete("/planets/23")
-            .expect(404)
-            .expect("Content-Type", /text\/html\);
-
-        expect(response.text).toContain("Cannot DELETE /planets/23")
-    })
-
-    test("Invalid planet ID", async ()=>{
-
-        const response = await request
-            .delete("/planets/asdf")
-            .expect(404)
-            .expect("Content-Type", /text\/html\);
-
-        expect(response.text).toContain("Cannot DELETE /planets/23")
-    })
-})
-
-describe("POST  /planets/:id/photo", ()=>{
-    test("Valid test with PNG file", async ()=>{
+describe("POST /planets/:id/photo", () => {
+    test("Valid request with PNG file upload", async () => {
         await request
             .post("/planets/23/photo")
-            .attach("photo", "test-fixture/photo/file.png")
+            .attach("photo", "test-fixtures/photos/file.png")
             .expect(201)
-            .expert("Access-Control-Allow-Origin, http://localhost:8080");
-
+            .expect("Access-Control-Allow-Origin", "http://localhost:8080")
     })
 
-    test("Invalid planets ID", async () => {
-        const response= await request
+    test("Invalid planet ID", async () => {
+        const response = await request
             .post("/planets/asdf/photo")
-            expect(404)
-            .expect("Content-Type", /text\/html\);
+            .expect(404)
+            .expect("Content-Type", /text\/html/)
 
         expect(response.text).toContain("Cannot POST /planets/asdf/photo")
     })
 
-    test("Invalid request - No file", async () => {
-        const response= await request
+    test("Invalid request with no file upload", async () => {
+        const response = await request
             .post("/planets/23/photo")
-            expect(404)
-            .expect("Content-Type", /text\/html\);
+            .expect(400)
+            .expect("Content-Type", /text\/html/)
 
-        expect(response.text).toContain("No photo to upload")
+        expect(response.text).toContain("No photo file uploaded.")
     })
-})
+
+    test("Planet does not exist", async () => {
+        // @ts-ignore
+        prismaMock.planet.update.mockRejectedValue(new Error("Error"));
+
+        const response = await request
+            .post("/planets/23/photo")
+            .attach("photo", "test-fixtures/photos/file.png")
+            .expect(404)
+            .expect("Content-Type", /text\/html/);
+
+        expect(response.text).toContain("Cannot POST /planets/23/photo");
+    })
+
+    test("Valid request with JPG file upload", async () => {
+        await request
+            .post("/planets/23/photo")
+            .attach("photo", "test-fixtures/photos/file.jpg")
+            .expect(201)
+            .expect("Access-Control-Allow-Origin", "http://localhost:8080");
+    })
+
+    test("Invalid request with text file upload", async () => {
+        const response = await request
+            .post("/planets/23/photo")
+            .attach("photo", "test-fixtures/photos/file.txt")
+            .expect(500)
+            .expect("Content-Type", /text\/html/);
+
+        expect(response.text).toContain("Error: The uploaded file must be a JPG or a PNG image.");
+    })
+});
 

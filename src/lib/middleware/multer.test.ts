@@ -1,13 +1,14 @@
 import { generatePhotoFilename } from "./multer";
 
-describe("generatePhotoFilename", ()=>{
+describe("generatePhotoFilename", () => {
     test.each([
         ["image/png", "png"],
-        ["image/jpeg", "jpeg"]
-    ])("Generate filename whit correct exstansion when passed mimeType `%s", (mimeType, expercedFileExistension)=>{
-        const fullFileName = generatePhotoFilename(mimeType)
-        const [, fileExtension] = fullFileName.split(".")
-
-        expect(fileExistension).toEqual(expercedFileExistension)
-    })
-})
+        ["image/jpeg", "jpeg"],
+    ])(
+        (mimeType, expectedFileExtension) => {
+            const fullFilename = generatePhotoFilename(mimeType)
+            const [, fileExtension] = fullFilename.split(".")
+            expect(fileExtension).toEqual(expectedFileExtension)
+        }
+    );
+});
