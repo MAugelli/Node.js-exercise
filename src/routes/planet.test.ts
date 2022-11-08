@@ -1,4 +1,3 @@
-import { describe } from "node:test"
 import supertest from "supertest"
 import app from "./app"
 import {prismaMock} from "./lib/prisma/client.mock"
