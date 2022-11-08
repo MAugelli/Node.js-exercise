@@ -34,7 +34,8 @@ describe("GET /planets", async () => {
         .get("/planets")
         .expect(200)
         .expect("Content-Type", /application\/json\)
-        .expert("Access-Control-Allow-Origin, http://localhost:8080");
+        .expect("Access-Control-Allow-Origin", "http://localhost:8080")
+        .expect("Access-Control-Allow-Credentials", "true")
 
     expect(response.body).toEqual(planets)
     })
@@ -116,7 +117,8 @@ describe("POST /planets", async () => {
         )
         .expect(201)
         .expect("Content-Type", /application\/json\)
-        .expert("Access-Control-Allow-Origin, http://localhost:8080");
+        .expect("Access-Control-Allow-Origin", "http://localhost:8080")
+        .expect("Access-Control-Allow-Credentials", "true")
 
 
     expect(response.body).toEqual(planet)
@@ -171,7 +173,8 @@ describe("PUT /planets/:id", async () => {
         )
         .expect(200)
         .expect("Content-Type", /application\/json\)
-        .expert("Access-Control-Allow-Origin, http://localhost:8080");
+        .expect("Access-Control-Allow-Origin", "http://localhost:8080")
+        .expect("Access-Control-Allow-Credentials", "true")
 
 
     expect(response.body).toEqual(planet)
@@ -239,6 +242,7 @@ describe("POST /planets/:id/photo", () => {
             .attach("photo", "test-fixtures/photos/file.png")
             .expect(201)
             .expect("Access-Control-Allow-Origin", "http://localhost:8080")
+            .expect("Access-Control-Allow-Credentials", "true")
     })
 
     test("Invalid planet ID", async () => {
