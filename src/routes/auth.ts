@@ -1,56 +1,71 @@
-import { Router } from "express";
-import { passport } from "../lib/middleware/passport";
+import supertest from "supertest"
+import app from "../app"
 
-const router = Router();
+const request = supertest(app)
 
-router.get("/login", (request, response, next) => {
-    if (typeof request.query.redirectTo !== "string" || !request.query.redirectTo) {
-        response.status(400);
-        return next("Missing redirectTo query string parameter");
-    }
+describe("GET /auth/login", () => {
+  test("Valid request", async () => {
+    await request
+      .get("/auth/login?redirectTo=http://website.com")
+      .expect(302)
+      .expect("Location", "/auth/github/login")
+      .expect("Set-Cookie", /^connect.sid=/)
+      .expect("Access-Control-Allow-Origin", "http://localhost:8080")
+      .expect("Access-Control-Allow-Credentials", "true")
+  })
 
-    request.session.redirectTo = request.query.redirectTo;
+  test("Invalid request", async () => {
+    const response = await request
+      .get("/auth/login")
+      .expect(400)
+      .expect("Content-Type", /text\/html/)
 
-    response.redirect("/auth/github/login");
-});
+    expect(response.text).toContain(
+      "Missing redirectTo query string parameter"
+    )
+  })
+})
 
-router.get(
-    "/github/login",
-    passport.authenticate("github", {
-        scope: ["user:email"],
-    })
-);
+describe("GET /auth/logout", () => {
+  test("Valid request", async () => {
+    await request
+      .get("/auth/logout?redirectTo=http://website.com")
+      .expect(302)
+      .expect("Location", "http://website.com")
+      .expect("Access-Control-Allow-Origin", "http://localhost:8080")
+      .expect("Access-Control-Allow-Credentials", "true")
+  })
 
-router.get(
-    "/github/callback",
-    // @ts-ignore
-    passport.authenticate("github", {
-        failureRedirect: "/auth/github/login",
-        keepSessionInfo: true,
-    }),
-    (request, response) => {
-        if (typeof request.session.redirectTo !== "string") {
-            return response.status(500).end();
-        }
+  test("Invalid request", async () => {
+    const response = await request
+      .get("/auth/logout")
+      .expect(400)
+      .expect("Content-Type", /text\/html/)
 
-        response.redirect(request.session.redirectTo);
-    });
+    expect(response.text).toContain(
+      "Missing redirectTo query string parameter"
+    )
+  })
+})
 
-router.get("/logout", (request, response, next) => {
-    if (typeof request.query.redirectTo !== "string" || !request.query.redirectTo) {
-        response.status(400);
-        return next("Missing redirectTo query string parameter");
-    }
+describe("GET /auth/github/login", () => {
+  test("Valid request", async () => {
+    await request
+      .get("/auth/github/callback")
+      .expect(302)
+      .expect("Location", /^https:\/\/github.com\/login\/oauth\/authorize/)
+      .expect("Access-Control-Allow-Origin", "http://localhost:8080")
+      .expect("Access-Control-Allow-Credentials", "true")
+  })
+})
 
-    const redirectUrl = request.query.redirectTo;
-
-    request.logout((error) => {
-        if (error) {
-            return next(error);
-        }
-
-        response.redirect(redirectUrl);
-    });
-});
-
-export default router;
+describe("GET /auth/github/callback", () => {
+  test("Valid request", async () => {
+    await request
+      .get("/auth/github/callback")
+      .expect(302)
+      .expect("Location", /^https:\/\/github.com\/login\/oauth\/authorize/)
+      .expect("Access-Control-Allow-Origin", "http://localhost:8080")
+      .expect("Access-Control-Allow-Credentials", "true")
+  })
+})
